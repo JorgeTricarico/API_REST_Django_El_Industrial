@@ -11,6 +11,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from config import (
+    SECRET_KEY as CONFIG_SECRET_KEY,
+    DATABASE_HOST as CONFIG_DATABASE_HOST,
+    DATABASE_NAME as CONFIG_DATABASE_NAME,
+    DATABASE_USER as CONFIG_DATABASE_USER,
+    DATABASE_PASSWORD as CONFIG_DATABASE_PASSWORD,
+    DATABASE_PORT as CONFIG_DATABASE_PORT,
+    API_KEY as CONFIG_API_KEY
+)
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,11 +30,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1-3z2bk$aom5os4nggl(j661#qnb*9%7efh0!h9o8w9frv9jv2'
+SECRET_KEY = CONFIG_API_KEY
 #SECRET_KEY = os.environ.get('SECRET_KEY', default='you secret key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+#DEBUG = 'RENDER' not in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +53,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'producto',
-    'rest_framework'
+    'rest_framework',
+    'quickstart',
+    'coreapi'
 ]
 
 MIDDLEWARE = [
@@ -89,11 +101,11 @@ WSGI_APPLICATION = 'drf_el_industrial.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bt4f67efgou3ltj1ccqz',  # Nombre de tu base de datos en la nube
-        'USER': 'u2jakrll7pwlqnebmuqx',  # Usuario para acceder a la base de datos
-        'PASSWORD': 'xmQhE8fWsTvNEqJHjnDFSLtEyaFKG5',  # Contraseña del usuario
-        'HOST': 'bt4f67efgou3ltj1ccqz-postgresql.services.clever-cloud.com',  # Dirección del servidor de la base de datos
-        'PORT': '50013',  # Puerto de conexión (por ejemplo, '5432' para PostgreSQL)
+        'NAME': CONFIG_DATABASE_NAME,  # Nombre de tu base de datos en la nube
+        'USER': CONFIG_DATABASE_USER,  # Usuario para acceder a la base de datos
+        'PASSWORD': CONFIG_DATABASE_PASSWORD,  # Contraseña del usuario
+        'HOST': CONFIG_DATABASE_HOST,  # Dirección del servidor de la base de datos
+        'PORT': CONFIG_DATABASE_PORT,  # Puerto de conexión (por ejemplo, '5432' para PostgreSQL)
     }
 }
 
@@ -138,3 +150,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 10
+# }
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}

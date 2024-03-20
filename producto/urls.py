@@ -1,9 +1,17 @@
+from django.urls import path, include
 from rest_framework import routers
-from .api import ProductoViewSet
+from producto import views
+from producto import views
 #urlpatterns = []
 
 router = routers.DefaultRouter()
 
-router.register('api/producto', ProductoViewSet, 'producto')
+router.register(r'producto', views.ProductoViewSet, 'producto')
+router.register(r'productos-scraping', views.ProductoScrapingViewSet, 'productos-scraping')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)),
+    path('productos-scraping/', views.ProductoScrapingViewSet.as_view({'post': 'create'}), name='productos-scraping'),
+    path('productos-scraping/', views.ProductoScrapingViewSet.as_view({'get': 'list'}), name='productos-scraping'),
+]
+
